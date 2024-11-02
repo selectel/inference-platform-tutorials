@@ -1,0 +1,29 @@
+tags:
+  autoscaling: false
+  traefikBalancing: false
+  istioGateway: true
+  canary: false
+  sfs: false
+  s3: true
+  istioBasicAuth:
+    main:
+      enable: true
+      passwordBase64: # Добавьте base64-кодированный пароль
+
+main:
+  imageName: # Укажите имя образа, например, repo.mlops.selcloud.ru/mldp/triton_transformer_server:24.05-zstd
+  numGpus: 1
+  environment:
+    TRITON_AWS_MOUNT_DIRECTORY: # Укажите путь к директории монтирования AWS, например, /opt/tritonserver
+
+  serverArgs:
+    - '--model-repository=s3://# Укажите URL репозитория модели, например, https://s3.ru-1.storage.selcloud.ru:443/inferp-testing-demo/model_repository'
+    - '--log-verbose=1'
+  nodeSelector:
+    demo: "base"
+
+secret:
+  s3:
+    region: # Укажите регион, например, ru-1
+    id: # Укажите ID
+    key: # Укажите ключ

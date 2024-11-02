@@ -1,0 +1,59 @@
+tags:
+  autoscaling: false
+  traefikBalancing: false
+  istioGateway: true
+  canary: true
+  sfs: true
+  s3: true
+  istioBasicAuth:
+    main:
+      enable: false
+      passwordBase64: # Добавьте base64-кодированный пароль
+    canary:
+      enable: false
+      passwordBase64: # Добавьте base64-кодированный пароль
+
+main:
+  imageName: # Укажите имя образа, например, repo.mlops.selcloud.ru/mldp/triton_transformer_server:24.05-zstd
+  sfsAddress: # Укажите адрес SFS, например, 10.222.2.252
+  sfsModelDirectoryPath: # Укажите путь к директории модели SFS
+  modelRepositoryTritonDirectory: # Укажите путь к директории репозитория модели Triton
+  numGpus: 1
+  environment:
+    TRANSFORMERS_CACHE: # Укажите путь к кэшу трансформеров
+    TRITON_AWS_MOUNT_DIRECTORY: # Укажите путь к директории монтирования AWS
+  serverArgs:
+    - '--model-repository=s3://# Укажите URL репозитория модели'
+    - '--log-verbose=1'
+  nodeSelector:
+    demo: "canary"
+
+canary:
+  imageName: # Укажите имя образа, например, repo.mlops.selcloud.ru/mldp/triton_transformer_server:24.05-zstd
+  sfsAddress: # Укажите адрес SFS, например, 10.222.2.252
+  sfsModelDirectoryPath: # Укажите путь к директории модели SFS
+  modelRepositoryTritonDirectory: # Укажите путь к директории репозитория модели Triton
+  numGpus: 1
+  shmsize: "1024Mi"
+  environment:
+    TRANSFORMERS_CACHE: # Укажите путь к кэшу трансформеров
+    TRITON_AWS_MOUNT_DIRECTORY: # Укажите путь к директории монтирования AWS
+  serverArgs:
+    - '--model-repository=s3://# Укажите URL репозитория модели' # if s3 storage for models
+    - '--log-verbose=1'
+  nodeSelector:
+    demo: "canary"
+
+secret:
+  s3:
+    region: # Укажите регион, например, ru-1
+    id: # Укажите ID
+    key: # Укажите ключ
+
+istio:
+  accessLogs:
+    enable: false
+    namespace: istio-system
+  virtualservice:
+    primaryWeight: 80
+    canaryWeight: 20

@@ -1,0 +1,83 @@
+tags:
+  autoscaling: true
+  traefikBalancing: false
+  istioGateway: true
+  canary: false
+  sfs: true
+  s3: true
+  istioBasicAuth:
+    main:
+      enable: false
+      passwordBase64: # Добавьте base64-кодированный пароль
+
+main:
+  imageName: # Укажите имя образа, например, repo.mlops.selcloud.ru/mldp/triton_transformer_server:24.05-zstd
+  sfsAddress: # Укажите адрес SFS
+  sfsModelDirectoryPath: # Укажите путь к директории модели SFS
+  modelRepositoryTritonDirectory: # Укажите путь к директории репозитория модели Triton
+  numGpus: 1
+  environment:
+    TRANSFORMERS_CACHE: # Укажите путь к кэшу трансформеров
+    TRITON_AWS_MOUNT_DIRECTORY: # Укажите путь к директории монтирования AWS
+  serverArgs:
+    - '--model-repository=s3://# Укажите URL репозитория модели'
+    - '--log-verbose=1'
+  autoscaling:
+    minReplicas: 1
+    maxReplicas: 2
+    metrics:
+    - type: Pods
+      pods:
+        metric:
+          name: avg_time_queue_us
+        target:
+          type: AverageValue
+          averageValue: 1000000000m
+  nodeSelector:
+    demo: "autoscaling"
+
+secret:
+  s3:
+    region: # Укажите регион, например, ru-1
+    id: # Укажите ID
+    key: # Укажите ключ
+
+prometheus-adapter:
+  namespaceOverride: inferp-platform
+  prometheus:
+    url: http://kube-prometheus-stack-prometheus
+    port: 9090
+  rules:
+    custom:
+      - seriesQuery: 'nv_inference_queue_duration_us{namespace!="",pod!=""}'
+        resources:
+          overrides:
+            namespace:
+              resource: "namespace"
+            pod:
+              resource: "pod"
+        name:
+          matches: "nv_inference_queue_duration_us"
+          as: "time_queue_ms_for_minute"
+        metricsQuery: rate(nv_inference_queue_duration_us{<<.LabelMatchers>>}[1m]) / 1000
+        # Описание: Эта метрика вычисляет среднее время ожидания в очереди за минуту в миллисекундах.
+        # Использование: Используйте эту метрику для мониторинга задержек в очереди и оптимизации производительности.
+
+      - seriesQuery: 'nv_inference_queue_duration_us{namespace!="",pod!=""}'
+        resources:
+          overrides:
+            namespace:
+              resource: "namespace"
+            pod:
+              resource: "pod"
+        name:
+          matches: "nv_inference_queue_duration_us"
+          as: "avg_time_queue_us"
+        metricsQuery: 'avg(rate(nv_inference_queue_duration_us{<<.LabelMatchers>>}[30s])/(1+rate(nv_inference_request_success{<<.LabelMatchers>>}[30s]))) by (<<.GroupBy>>)'
+        # Описание: Эта метрика вычисляет среднее время ожидания в очереди за 30 секунд в микросекундах.
+        # Использование: Используйте эту метрику для детального анализа производительности и выявления узких мест в обработке запросов.
+
+istio:
+  accessLogs:
+    enable: false
+    namespace: istio-system
