@@ -4,10 +4,9 @@
 На S3 скачиваем модель `falcon7b` из нашего репозитория:
 
 ```bash
-sudo mkdir -p /mnt/nfs && sudo mount -vt nfs "<sfs ip>:<sfs mount path>" /mnt/nfs
 apt install rclone -y
 mkdir model_repository
-cp -r /path/to/your/local/falcon7b model_repository
+cp -r demo-inferp/falcon7b/model_repository model_repository
 ```
 
 С помощью утилиты [rclone](https://docs.selectel.ru/cloud/object-storage/tools/rclone/) готовим конфиг следующего содержания:
