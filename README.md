@@ -14,17 +14,16 @@ Tutorials for Selectel Inference Platform
 - **Гибкость и независимость**: Использование Open Source решений позволяет избежать vendor lock-in.
 - **Экосистема продуктов**: Возможность интеграции с другими продуктами Selectel, такими как Kubernetes, объектное хранилище и CDN.
 
-
 ## Справка по Triton Inference Server
 Ведение структуры репозитория в Triton Inference Server и работа с ним в Kubernetes (k8s) требует понимания нескольких ключевых аспектов. Вот основные правила и основы:
 
-Структура репозитория модели в Triton
+### Структура репозитория модели в Triton
 
-1. Репозиторий модели: Это файловая система, где хранятся модели, которые Triton будет обслуживать. Репозиторий может находиться на локальной файловой системе или в облачном хранилище, таком как S3 или Google Cloud Storage.
+1. **Репозиторий модели**: Это файловая система, где хранятся модели, которые Triton будет обслуживать. Репозиторий может находиться на локальной файловой системе или в облачном хранилище, таком как S3 или Google Cloud Storage.
 
-2. Структура папок: Каждая модель должна находиться в своей директории внутри репозитория. Например:
-```
-model_repository/
+2. **Структура папок**: Каждая модель должна находиться в своей директории внутри репозитория. Например:
+   ```
+   model_repository/
    ├── model1
    │   ├── 1
    │   │   └── model.onnx
@@ -33,11 +32,12 @@ model_repository/
        ├── 1
        │   └── model.pt
        └── config.pbtxt
-```
-Здесь 1 — это версия модели. Triton поддерживает версионирование моделей.
+   ```
+   Здесь 1 — это версия модели. Triton поддерживает версионирование моделей.
 
-Файл конфигурации (config.pbtxt): Этот файл определяет конфигурацию модели, включая информацию о входах и выходах, параметры пакетной обработки и другие настройки. Для некоторых бэкендов Triton может автоматически генерировать конфигурацию.
-Поддерживаемые форматы моделей: Triton поддерживает множество форматов моделей, включая TensorRT, ONNX, PyTorch, TensorFlow и другие. 
+3. **Файл конфигурации (`config.pbtxt`)**: Этот файл определяет конфигурацию модели, включая информацию о входах и выходах, параметры пакетной обработки и другие настройки. Для некоторых бэкендов Triton может автоматически генерировать конфигурацию.
+
+4. **Поддерживаемые форматы моделей**: Triton поддерживает множество форматов моделей, включая TensorRT, ONNX, PyTorch, TensorFlow и другие.
 
 ### Работа с Triton в Inference платформе
 
@@ -55,3 +55,11 @@ model_repository/
 - **Папка [`models format tutorial`](./models-format-tutorial)**: Содержит примеры деплоя различных форматов моделей.
 
 Эта платформа идеально подходит для компаний, стремящихся быстро и эффективно внедрять AI-решения, минимизируя затраты на инфраструктуру и техническую поддержку.
+
+### Полезные ссылки на документацию Triton
+
+- [Начало работы с Triton](https://docs.nvidia.com/deeplearning/triton-inference-server/user-guide/docs/getting_started/quickstart.html)
+- [Архитектура Triton](https://docs.nvidia.com/deeplearning/triton-inference-server/user-guide/docs/user_guide/architecture.html)
+- [Руководство по репозиторию моделей](https://docs.nvidia.com/deeplearning/triton-inference-server/user-guide/docs/user_guide/model_repository.html)
+- [Оптимизация производительности](https://docs.nvidia.com/deeplearning/triton-inference-server/user-guide/docs/user_guide/performance_tuning.html)
+- [Часто задаваемые вопросы (FAQ)](https://docs.nvidia.com/deeplearning/triton-inference-server/user-guide/docs/user_guide/faq.html)
