@@ -1,0 +1,9 @@
+tiktoken==0.7.0
+datasets==2.20.0
+kaldialign==0.9.1
+openai-whisper==20231117
+librosa==0.10.2.post1
+soundfile==0.12.1
+safetensors==0.4.3
+transformers==4.42.4
+janus==1.0.0
