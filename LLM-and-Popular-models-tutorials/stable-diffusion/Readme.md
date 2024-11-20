@@ -48,7 +48,7 @@ secret:
 
 Добавим чарты из нашего харбор:
 ```bash
-helm repo add mldp https://repo.mlops.selectel.ru/chartrepo/mldp
+helm repo add mldp https://repo.mlops.selcloud.ru/chartrepo/mldp
 ```
 
 И установим чарт:
