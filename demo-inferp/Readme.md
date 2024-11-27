@@ -36,6 +36,23 @@ mkdir -p /mnt/nfs/hf_cache
 
 Наша инфраструктура готова.
 
+### Интеграция с CraaS
+Также в платформе поставляется приватный реджестри для ваших образров.
+Чтобы использовать его, нужно в `values.yaml` указать креды для доступа к реджстри в формате:
+```yaml
+secret:
+  registry:
+    dockerconfigjson: # в формате base64
+```
+Чтобы получить dockerconfigjson в base64, необходимо залогиниться в CraaS:
+```
+docker login cr.selcloud.ru/mlops
+```
+dockerconfigjson можно получить следующей командой:
+```bash
+cat ~/.docker/config.json | base64
+```
+
 ## Базовый сценарий
 Суть сценария в базовом деплое несложной модели в эндпоинты
 ![img.png](screens/demo_base.png)
@@ -46,7 +63,7 @@ kubectl label namespace triton-demo-1 istio-injection=enabled
 ```
 
 Используем `values` для сценария `demo/base_scenario.yaml`, предварительно скорректировав креды S3:
-
+Обязательно указывайте путь до модели в S3 вместе с https (если используете отличный от AWS S3) в формате `s3://https://<s3_url>:<s3_port>/<bucket_name>/<path_to_model>`.
 ```yaml
 tags:
   autoscaling: false
@@ -67,7 +84,7 @@ main:
     TRITON_AWS_MOUNT_DIRECTORY: # Укажите путь к директории монтирования AWS, например, /opt/tritonserver
 
   serverArgs:
-    - '--model-repository=s3://# Укажите URL репозитория модели, например, https://s3.ru-1.storage.selcloud.ru:443/<bucket_name>/model_repository'
+    - '--model-repository=s3://https://s3.ru-1.storage.selcloud.ru:443/<bucket_name>/model_repository' # Укажите URL репозитория модели, например,
     - '--log-verbose=1'
   nodeSelector:
     demo: "base"
@@ -77,6 +94,11 @@ secret:
     region: # Укажите регион, например, ru-1
     id: # Укажите ID
     key: # Укажите ключ
+
+istio:
+  accessLogs:
+    enable: true # Установите в true, если деплоите первый инференс в платформу. если второй и далее, то false
+    namespace: istio-system
 ```
 
 Добавим чарты из нашего харбор:
@@ -89,7 +111,17 @@ helm repo add mldp https://repo.mlops.selcloud.ru/chartrepo/mldp
 helm upgrade --install -f base_scenario.yaml --namespace triton-demo-1 triton-demo-1 mldp/triton-inference-server 
 ```
 
-Зайдем в графана, посмотрим на дашборд. Подадим запрос на выполнение инференса:
+Зайдем в графана, посмотрим на дашборд. 
+Чтобы зайти в графану, нужно выполнить port-forward:
+```bash
+kubectl port-forward svc/kube-prometheus-stack-grafana -n  inferp-platform  3000:80 --address='0.0.0.0'
+```
+Логин пароль от grafana:
+```
+admin
+prom-operator
+```
+Подадим запрос на выполнение инференса:
 
 ```bash
 export INFERENCE_URL=<взять из grafana>

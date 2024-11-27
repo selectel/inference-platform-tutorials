@@ -78,7 +78,7 @@ default_model_filename: "model.onnx"
 
 3. Добавьте чарты из нашего харбор:
    ```bash
-   helm repo add mldp https://repo.mlops.selectel.ru/chartrepo/mldp
+   helm repo add mldp https://repo.mlops.selcloud.ru/chartrepo/mldp
    ```
 
 4. Установите чарт:
