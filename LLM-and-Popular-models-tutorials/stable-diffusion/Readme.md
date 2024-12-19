@@ -42,8 +42,8 @@ main:
 secret:
   s3:
     region: # Укажите регион, например, ru-1
-    id: # Укажите ID
-    key: # Укажите ключ
+    access_key: # Укажите Access Key
+    secret_key: # Укажите Secret Key
 ```
 
 Добавим чарты из нашего харбор:

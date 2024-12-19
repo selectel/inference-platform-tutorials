@@ -72,8 +72,8 @@ Python Backend позволяет создавать кастомные моде
    secret:
      s3:
        region: # Укажите регион, например, ru-1
-       id: # Укажите ID
-       key: # Укажите ключ
+       access_key: # Укажите Access Key
+       secret_key: # Укажите Secret Key
    ```
 
 3. Добавьте чарты из нашего харбор:

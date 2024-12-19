@@ -92,8 +92,8 @@ main:
 secret:
   s3:
     region: # Укажите регион, например, ru-1
-    id: # Укажите ID
-    key: # Укажите ключ
+    access_key: # Укажите Access Key
+    secret_key: # Укажите Secret Key
 
 istio:
   accessLogs:
@@ -183,8 +183,8 @@ main:
 secret:
   s3:
     region: # Укажите регион, например, ru-1
-    id: # Укажите ID
-    key: # Укажите ключ
+    access_key: # Укажите Access Key
+    secret_key: # Укажите Secret Key
 
 prometheus-adapter:
   namespaceOverride: inferp-platform
@@ -321,8 +321,8 @@ canary:
 secret:
   s3:
     region: # Укажите регион, например, ru-1
-    id: # Укажите ID
-    key: # Укажите ключ
+    access_key: # Укажите Access Key
+    secret_key: # Укажите Secret Key
 
 istio:
   accessLogs:
