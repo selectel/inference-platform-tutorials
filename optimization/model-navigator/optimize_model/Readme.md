@@ -121,7 +121,3 @@ docker run -it --network=host nvcr.io/nvidia/tritonserver:24.10-py3-sdk bash
 ````bash
 docker stop tritonserver
 ````
-
-## Что дальше?
-
-Узнайте больше о использовании Triton Model Navigator в разделе Quick Start, где вы найдете больше информации об оптимизации моделей и обслуживании инференса.([1](https://triton-inference-server.github.io/model_navigator/0.12.0/))
