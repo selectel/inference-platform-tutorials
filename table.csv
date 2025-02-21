@@ -1,0 +1,9 @@
+Config Name,Request Rate,ISL,Num Dataset Entries,p99 Time To First Token (ms),p99 Inter Token Latency (ms),p99 Request Latency (ms),p99 Output Sequence Length (tokens),Avg. Output Token Throughput (tokens/sec),Request Throughput (requests/sec)
+deepseek-r1-distill-qwen-1.5b_run_config_3,100,551,100,26271.59,0.00,26271.59,28.00,523.38,26.36
+deepseek-r1-distill-qwen-1.5b_run_config_4,150,551,100,30137.46,0.00,30137.46,27.00,457.11,23.04
+deepseek-r1-distill-qwen-1.5b_run_config_5,200,551,100,32185.04,0.00,32185.04,27.00,377.59,19.08
+deepseek-r1-distill-qwen-1.5b_run_config_2,1,551,200,121.37,0.00,121.37,27.01,166.08,8.34
+deepseek-r1-distill-qwen-1.5b_run_config_1,1,551,150,130.57,0.00,130.57,27.03,163.20,8.28
+deepseek-r1-distill-qwen-1.5b_run_config_0,1,551,100,151.03,0.00,151.03,28.00,158.27,8.00
+
+Config Name,GPU,p99 GPU Power Usage (W),p99 GPU Energy Consumption (MJ),p99 GPU Utilization (%),p99 GPU Memory Used (GB),Avg. GPU Power Limit (W),Avg. GPU Total Memory (GB)
